@@ -29,7 +29,6 @@
 
     /* Containers for alpha2, bravo2, charlie2, delta2 */
     #activity {
-      /* We'll use this same area for the "Great job!" message */
       margin-top: 20px;
     }
 
@@ -37,7 +36,6 @@
       margin-bottom: 20px;
     }
 
-    /* "Play" buttons get 10px bottom margin */
     .playBtn {
       margin-bottom: 25px;
     }
@@ -50,7 +48,6 @@
       vertical-align: middle;
     }
 
-    /* "Great job!" message in same area; no fancy centering so it appears inline with the flow */
     #message {
       font-size: 2rem;
       color: blue;
@@ -213,12 +210,10 @@
       <span class="checkmark" id="delta2Checkmark" style="display: none;">✔</span>
     </div>
 
-    <!-- Great job message in the same area -->
     <div id="message">Great job!</div>
   </div>
 
   <script>
-    // Object to store the initial 4 words
     let words = [];
     let changes = [];
 
@@ -403,7 +398,6 @@
         // Show the activity section
         activity.style.display = 'block';
 
-        // Show alpha2 and auto-play it once
         showContainer('alpha');
         document.getElementById('alpha2Input').focus();
       } else {
@@ -436,6 +430,7 @@
       document.getElementById('charlie2Container').style.display = 'none';
       document.getElementById('delta2Container').style.display   = 'none';
 
+      // Empty the word chain
       const chainWords = document.querySelectorAll('.word-chain-word');
       chainWords.forEach((span) => {
         span.innerHTML = '&nbsp;';
