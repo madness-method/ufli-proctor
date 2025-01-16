@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UFLI Proctor</title>
+  <!-- © copyright Kevin Thackorie. See 'LICENSE.md' file for details. -->
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 40px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    #initial-inputs {
+      margin-bottom: 20px;
+    }
+
+    .regular-input {
+      width: 75px;
+    }
+
+    #initial-inputs button {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    /* Containers for alpha2, bravo2, charlie2, delta2 */
+    #activity {
+      /* We'll use this same area for the "Great job!" message */
+      margin-top: 20px;
+    }
+
+    .word-container {
+      margin-bottom: 20px;
+    }
+
+    /* "Play" buttons get 10px bottom margin */
+    .playBtn {
+      margin-bottom: 25px;
+    }
+
+    .checkmark {
+      height:10px;
+      color: green;
+      font-size: 2rem;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    /* "Great job!" message in same area; no fancy centering so it appears inline with the flow */
+    #message {
+      font-size: 2rem;
+      color: blue;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .stubby-input {
+      width: 20px !important;
+    }
+
+    #word-chain-container {
+      margin-bottom: 50px;
+      font-size: 16px;
+    }
+
+    .word-chain-word {
+      display: inline-block;
+      width: 30px;
+      text-align: center;
+    }
+
+    .word-chain-arrow {
+      margin: 0 10px 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>UFLI Procter</h1>
+
+  <!-- Initial 4 input boxes + Submit button -->
+  <div id="initial-inputs">
+    <input
+      type="text"
+      id="alphaInput"
+      class="regular-input"
+      pattern="[A-Za-z]+"
+      class="regular-input"
+      required
+    />
+    <span>change the </span>
+    <input
+      type="text"
+      id="change-one"
+      pattern="[A-Za-z]+"
+      class="stubby-input"
+      required
+    />
+    <span>to a </span>
+    <input
+      type="text"
+      id="change-two"
+      pattern="[A-Za-z]+"
+      class="stubby-input"
+      required
+    />
+    <span>&rarr;</span>
+    <input
+      type="text"
+      id="bravoInput"
+      class="regular-input"
+      pattern="[A-Za-z]+"
+      required
+    />
+    <span>&rarr;</span>
+    <input
+      type="text"
+      id="charlieInput"
+      class="regular-input"
+      pattern="[A-Za-z]+"
+      required
+    />
+    <span>change the </span>
+    <input
+      type="text"
+      id="change-three"
+      pattern="[A-Za-z]+"
+      class="stubby-input"
+      required
+    />
+    <span>to a </span>
+    <input
+      type="text"
+      id="change-four"
+      pattern="[A-Za-z]+"
+      class="stubby-input"
+      required
+    />
+    <span>&rarr;</span>
+    <input
+      type="text"
+      id="deltaInput"
+      class="regular-input"
+      pattern="[A-Za-z]+"
+      required
+    />
+    <br />
+    <button id="submitWords">Submit</button>
+  </div>
+
+  <!-- Activity section (hidden by default) -->
+  <div id="activity" style="display: none;">
+
+    <!-- Word chain -->
+    <div id="word-chain-container">
+      <span id="word-chain-1" class="word-chain-word">&nbsp;</span>
+      <span class="word-chain-arrow">&rarr;</span>
+      <span id="word-chain-2" class="word-chain-word">&nbsp;</span>
+      <span class="word-chain-arrow">&rarr;</span>
+      <span id="word-chain-3" class="word-chain-word">&nbsp;</span>
+      <span class="word-chain-arrow">&rarr;</span>
+      <span id="word-chain-4" class="word-chain-word">&nbsp;</span>
+    </div>
+
+    <!-- ALPHA2 -->
+    <div id="alpha2Container" class="word-container" style="display: none;">
+      <button class="playBtn" data-word="alpha" id="play-alpha2">Play</button><br />
+      <input
+        type="text"
+        id="alpha2Input"
+        pattern="[A-Za-z]+"
+      />
+      <button class="submitBtn" data-word="alpha">Check</button>
+      <span class="checkmark" id="alpha2Checkmark" style="display: none;">✔</span>
+    </div>
+
+    <!-- BRAVO2 -->
+    <div id="bravo2Container" class="word-container" style="display: none;">
+      <button class="playBtn" data-word="bravo" id="play-bravo2">Play</button><br />
+      <input
+        type="text"
+        id="bravo2Input"
+        pattern="[A-Za-z]+"
+      />
+      <button class="submitBtn" data-word="bravo">Check</button>
+      <span class="checkmark" id="bravo2Checkmark" style="display: none;">✔</span>
+    </div>
+
+    <!-- CHARLIE2 -->
+    <div id="charlie2Container" class="word-container" style="display: none;">
+      <button class="playBtn" data-word="charlie" id="play-charlie2">Play</button><br />
+      <input
+        type="text"
+        id="charlie2Input"
+        pattern="[A-Za-z]+"
+      />
+      <button class="submitBtn" data-word="charlie">Check</button>
+      <span class="checkmark" id="charlie2Checkmark" style="display: none;">✔</span>
+    </div>
+
+    <!-- DELTA2 -->
+    <div id="delta2Container" class="word-container" style="display: none;">
+      <button class="playBtn" data-word="delta" id="play-delta2">Play</button><br />
+      <input
+        type="text"
+        id="delta2Input"
+        pattern="[A-Za-z]+"
+      />
+      <button class="submitBtn" data-word="delta">Check</button>
+      <span class="checkmark" id="delta2Checkmark" style="display: none;">✔</span>
+    </div>
+
+    <!-- Great job message in the same area -->
+    <div id="message">Great job!</div>
+  </div>
+
+  <script>
+    // Object to store the initial 4 words
+    let words = [];
+    let changes = [];
+
+    // Grab references to elements
+    const initialInputsContainer = document.getElementById('initial-inputs');
+    const submitWordsBtn = document.getElementById('submitWords');
+    const activity = document.getElementById('activity');
+    const message = document.getElementById('message');
+
+    // When "Submit" is clicked for the initial 4 words
+    submitWordsBtn.addEventListener('click', () => {
+      handleSubmit();
+    });
+
+    // Simple function to use browser's speech synthesis
+    function speakText(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    }
+
+    // Helper to show the next container and automatically "play"
+    function showContainer(wordKey) {
+      const containerId = wordKey + '2Container';
+      const container = document.getElementById(containerId);
+      container.style.display = 'block';
+
+      // Automatically click the "Play" button to speak once
+      const playBtn = container.querySelector('.playBtn');
+      if (playBtn) {
+        playBtn.click();
+      }
+    }
+
+    // Handle "Play" buttons (alpha2, bravo2, etc.)
+    const playBtns = document.querySelectorAll('.playBtn');
+    playBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const wordKey = btn.dataset.word; // "alpha", "bravo", ...
+        const wordVal = words[wordKey];
+
+        let speech = '';
+
+        if (btn.id === 'play-alpha2') {
+          speech += `make the word ${wordVal}`;
+        }
+
+        if (btn.id === 'play-bravo2') {
+          speech += `change the ${changes.one} to a ${changes.two}`;
+        }
+
+        if (btn.id === 'play-charlie2') {
+          speech += `change ${words.bravo} to ${wordVal}`;
+        }
+
+        if (btn.id === 'play-delta2') {
+          speech += `change the ${changes.three} to a ${changes.four}`;
+        }
+
+        speakText(speech);
+      });
+    });
+
+    // Handle "Check" buttons (for alpha2, bravo2, etc.)
+    const submitBtns = document.querySelectorAll('.submitBtn');
+    submitBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const wordKey = btn.dataset.word;  // e.g., "alpha"
+        const inputBox = document.getElementById(wordKey + '2Input');
+        const userInput = inputBox.value.trim();
+
+        // Validate single-word letters only
+        if (userInput.match(/^[A-Za-z]+$/)) {
+          // Compare with original stored word
+          if (userInput.toLowerCase() === words[wordKey].toLowerCase()) {
+            // Show checkmark
+            const checkmark = document.getElementById(wordKey + '2Checkmark');
+            checkmark.style.display = 'inline-block';
+
+            // Populate word in chain under the title so student can reference it during the next step
+            const chainWords = document.querySelectorAll('.word-chain-word');
+            for (let i = 0; i < chainWords.length; i++) {
+              if (chainWords[i].innerHTML === '&nbsp;') {
+                chainWords[i].innerHTML = userInput;
+                break;
+              }
+            }
+
+            // After 2 seconds, hide checkmark, hide current container, show next
+            setTimeout(() => {
+              checkmark.style.display = 'none';
+              document.getElementById(wordKey + '2Container').style.display = 'none';
+
+              // Move to next container
+              if (wordKey === 'alpha') {
+                showContainer('bravo');
+                document.getElementById('bravo2Input').focus();
+              } else if (wordKey === 'bravo') {
+                showContainer('charlie');
+                document.getElementById('charlie2Input').focus();
+              } else if (wordKey === 'charlie') {
+                showContainer('delta');
+                document.getElementById('delta2Input').focus();
+              } else if (wordKey === 'delta') {
+                // Done with all four
+                message.style.display = 'block';
+                // After 3 seconds, hide message and reset
+                setTimeout(() => {
+                  message.style.display = 'none';
+                  resetState();
+                }, 3000);
+              }
+            }, 2000);
+          } else {
+            alert('That is not the correct word. Try again!');
+            // Clear the input box after dismissing the alert
+            inputBox.value = '';
+          }
+        } else {
+          alert('Please complete all boxes with only letters.');
+          // Clear the input box after dismissing the alert
+          inputBox.value = '';
+        }
+      });
+    });
+
+    // For initial input, make the "Enter" key click the "Submit" button
+    const initialInputs = document.querySelectorAll('#initial-inputs input[type="text"]');
+    initialInputs.forEach((input) => {
+      input.addEventListener('keyup', (event) => {
+        if (event.key === 'Enter' && activity.style.display === 'none') {
+          handleSubmit();
+        }
+      });
+    });
+
+    // For activity, make the "Enter" key click the "Check" button
+    const activityInputs = document.querySelectorAll('.word-container input[type="text"]');
+    activityInputs.forEach((input) => {
+      input.addEventListener('keyup', (event) => {
+        if (event.key === 'Enter' && activity.style.display === 'block') {
+          // Get the container's word key from the input's ID (e.g. "alpha2Input" -> "alpha")
+          const wordKey = input.id.replace('2Input', '');
+          const checkBtn = document.querySelector(`.submitBtn[data-word="${wordKey}"]`);
+          if (checkBtn) {
+            checkBtn.click();
+          }
+        }
+      });
+    });
+
+    function handleSubmit() {
+      const alphaVal   = document.getElementById('alphaInput').value.trim();
+      const bravoVal   = document.getElementById('bravoInput').value.trim();
+      const charlieVal = document.getElementById('charlieInput').value.trim();
+      const deltaVal   = document.getElementById('deltaInput').value.trim();
+
+      const changeOne   = document.getElementById('change-one').value.trim();
+      const changeTwo   = document.getElementById('change-two').value.trim();
+      const changeThree = document.getElementById('change-three').value.trim();
+      const changeFour  = document.getElementById('change-four').value.trim();
+
+      // Validate each input has only letters
+      if (
+        alphaVal.match(/^[A-Za-z]+$/) &&
+        bravoVal.match(/^[A-Za-z]+$/) &&
+        charlieVal.match(/^[A-Za-z]+$/) &&
+        deltaVal.match(/^[A-Za-z]+$/)
+      ) {
+        // Store the words
+        words.alpha   = alphaVal;
+        words.bravo   = bravoVal;
+        words.charlie = charlieVal;
+        words.delta   = deltaVal;
+
+        changes.one   = changeOne;
+        changes.two   = changeTwo;
+        changes.three = changeThree;
+        changes.four  = changeFour;
+
+        // Hide the initial inputs
+        initialInputsContainer.style.display = 'none';
+        // Show the activity section
+        activity.style.display = 'block';
+
+        // Show alpha2 and auto-play it once
+        showContainer('alpha');
+        document.getElementById('alpha2Input').focus();
+      } else {
+        alert('Please complete all boxes with only letters.');
+      }
+    }
+
+    // Reset the page to its initial state
+    function resetState() {
+      // Hide the activity & message
+      activity.style.display = 'none';
+      message.style.display = 'none';
+
+      // Empty input boxes
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach((input) => {
+        input.value = '';
+      });
+
+      // Empty arrays
+      let words = [];
+      let changes = [];
+
+      // Show the initial inputs again
+      initialInputsContainer.style.display = 'block';
+
+      // Hide all second-round containers
+      document.getElementById('alpha2Container').style.display   = 'none';
+      document.getElementById('bravo2Container').style.display   = 'none';
+      document.getElementById('charlie2Container').style.display = 'none';
+      document.getElementById('delta2Container').style.display   = 'none';
+
+      const chainWords = document.querySelectorAll('.word-chain-word');
+      chainWords.forEach((span) => {
+        span.innerHTML = '&nbsp;';
+      });
+    }
+
+    document.getElementById('alphaInput').focus();
+  </script>
+</body>
+</html>
